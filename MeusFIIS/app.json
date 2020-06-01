@@ -1,0 +1,17 @@
+{
+  "name": "MeusFIIS",
+  "displayName": "MeusFIIS",
+  "expo": {
+    "name": "MeusFIIS",
+    "slug": "MeusFIIS",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

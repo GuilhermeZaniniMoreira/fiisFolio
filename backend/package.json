@@ -1,0 +1,8 @@
+{
+  "name": "MeusFIIS",
+  "version": "1.0.0",
+  "description": "MeusFIIS backend",
+  "main": "index.js",
+  "author": "Guilherme Zanini Moreira",
+  "license": "MIT"
+}

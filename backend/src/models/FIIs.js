@@ -5,9 +5,9 @@ const FIIsSchema = new mongoose.Schema({
     fund: String,
     ticker: String,
     baseDate: Date,
+    payment: Date,
     priceBaseDate: Number,
-    lastDivident: Date,
-    list: []
+    lastDivident: Date
 });
 
 module.exports = mongoose.model('FIIsSchema', FIIsSchema);

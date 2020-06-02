@@ -18,12 +18,12 @@ module.exports = {
         response.json(fiis);
     },
     async update(request, response) {
-
-        const { baseDate, priceBaseDate, lastDividend, list } = request.data;
-        const { ticker } = request.data;
+        
+        console.log(request);
+        const { baseDate, payment, priceBaseDate, lastDividend } = request.body;
+        const { ticker } = request.body;
         const filter = { ticker: ticker };
-        const update = { baseDate: baseDate, priceBaseDate:priceBaseDate, 
-                         lastDividend: lastDividend, list: list }
+        const update = { baseDate: baseDate, payment: payment, priceBaseDate:priceBaseDate, lastDividend: lastDividend }
 
         await FIIs.findOneAndUpdate(filter, update);
     }

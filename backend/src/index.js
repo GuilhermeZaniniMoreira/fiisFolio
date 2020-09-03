@@ -8,7 +8,8 @@ const bodyParser = require('body-parser')
 
 mongoose.connect(`mongodb+srv://guilherme:${process.env.PASSWORD}@cluster0-6ylbg.mongodb.net/fiis?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 app.use(cors());

@@ -2,12 +2,11 @@ const mongoose = require('mongoose')
 
 const FIIsSchema = new mongoose.Schema({
     name: String,
-    fund: String,
     ticker: String,
     baseDate: Date,
-    payment: Date,
+    paymentDate: Date,
     priceBaseDate: Number,
-    lastDivident: Date
+    dividend: Number
 });
 
 module.exports = mongoose.model('FIIsSchema', FIIsSchema);

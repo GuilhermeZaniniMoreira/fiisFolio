@@ -4,6 +4,6 @@ const routes = Router();
 
 routes.get('/fiis', FIIsController.index);
 routes.post('/fiis', FIIsController.store);
-routes.post('/fii-update', FIIsController.update);
+routes.post('/update', FIIsController.update);
 
 module.exports = routes;

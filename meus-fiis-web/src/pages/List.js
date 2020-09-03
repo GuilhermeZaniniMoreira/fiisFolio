@@ -35,9 +35,8 @@ export default function List() {
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState({});
 
-    function openModal(e, fii) {
+    function openModal(fii) {
         setSelected(fii);
-        console.log(fii)
         setIsOpen(true);
     }
   
@@ -89,14 +88,14 @@ export default function List() {
             <div className='list'>
                 <ul>
                     {searchTerm === '' ? fiis.map(fii => (
-                        <li key={fii._id} onClick={(e) => openModal(e, fii)}>
+                        <li key={fii._id} onClick={() => openModal(fii)}>
                             <div>
                                 <strong>{fii.ticker}</strong>
                                 <p>{fii.fund}</p>
                             </div>
                         </li>
                     )) : searchResults.map(fii => (
-                        <li key={fii._id} onClick={(e) => openModal(e, fii)}>
+                        <li key={fii._id} onClick={() => openModal(fii)}>
                             <div>
                                 <strong>{fii.ticker}</strong>
                                 <p>{fii.fund}</p>

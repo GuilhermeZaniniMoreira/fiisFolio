@@ -18,17 +18,22 @@ module.exports = {
     },
     async update(request, response) {
 
+        const { ticker, baseDate, paymentDate, priceBaseDate, dividend } = request.body;
         
-        const { baseDate, paymentDate, priceBaseDate, dividend } = request.body;
-        
-        const { ticker } = request.body;
-        const filter = { ticker: ticker };
-        const update = {baseDate: baseDate, paymentDate: paymentDate,
-                        priceBaseDate: priceBaseDate, dividend: dividend}
+        const fii = await FIIs.findOne({ ticker: ticker });
 
-        await FIIs.findOneAndUpdate(filter, update);
+        if (fii && fii.historic) {
+            const historic = fii.historic;
+            const found = historic.some(el => new Date(el.baseDate).getTime() === new Date(historic[0].baseDate).getTime());
+            
+            if (!found) {
+                const filter = { ticker };
+                const update = { baseDate, paymentDate, priceBaseDate, dividend, historic: [...historic, { baseDate, paymentDate, priceBaseDate, dividend }] };
+                await FIIs.findOneAndUpdate(filter, update);
+            }
+        }
 
-        const fii = await FIIs.find({ticker: ticker});
+        const fii = await FIIs.findOne({ ticker: ticker });
         response.json(fii);
     }
 }

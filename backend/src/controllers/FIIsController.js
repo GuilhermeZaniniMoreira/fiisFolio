@@ -33,7 +33,7 @@ module.exports = {
             }
         }
 
-        const fii = await FIIs.findOne({ ticker: ticker });
-        response.json(fii);
+        const data = await FIIs.findOne({ ticker: ticker });
+        response.json(data);
     }
 }

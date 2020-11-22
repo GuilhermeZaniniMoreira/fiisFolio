@@ -1,9 +1,24 @@
 const axios = require('axios')
 const FIIs = require('../models/FIIs');
+var fs = require('fs');
 
 module.exports = {
     async index(request, response) {
         const fiis = await FIIs.find();
+        const data = fiis.map(fii => {
+            return {
+                ticker: fii.ticker,
+            }
+        });
+        // const myJSON = JSON.stringify(data);
+        // console.log(myJSON)
+        // fs.writeFile("data.txt", myJSON, function(err) {
+        //     if(err) {
+        //         return console.log(err);
+        //     }
+        
+        //     console.log("The file was saved!");
+        // });
         return response.json(fiis);
     },
     async store(request, response) {

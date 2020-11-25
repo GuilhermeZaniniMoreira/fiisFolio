@@ -15,6 +15,7 @@ import Historical from '../pages/Historical';
 import Settings from '../pages/Settings';
 
 import AddFii from '../pages/AddFii';
+import UpdateFii from '../pages/UpdateFii';
 
 export default function Routes() {
   return (
@@ -54,6 +55,10 @@ export default function Routes() {
         <Tab.Screen name="Histórico" component={Historical} />
         <Tab.Screen name="Configurações" component={Settings} />
         <Tab.Screen name="AdicionarFii" component={AddFii} options={{
+            tabBarButton: () => null,
+            tabBarVisible: false,
+        }} />
+        <Tab.Screen name="AlterarFii" component={UpdateFii} options={{
             tabBarButton: () => null,
             tabBarVisible: false,
         }} />

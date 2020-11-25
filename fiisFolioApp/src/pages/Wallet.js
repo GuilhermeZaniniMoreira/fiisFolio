@@ -1,25 +1,31 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   FlatList,
   StyleSheet,
   Text,
   SafeAreaView,
   TouchableOpacity,
-  Button,
   Alert,
-  View
+  View,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
 
+// import {
+//   AdMobBanner,
+//   AdMobInterstitial,
+//   PublisherBanner,
+//   AdMobRewarded,
+// } from 'react-native-admob';
+
 import {
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded,
-  setTestDeviceIDAsync,
-} from 'expo-ads-admob';
+  InterstitialAd,
+  RewardedAd,
+  BannerAd,
+  TestIds,
+  BannerAdSize
+} from '@react-native-firebase/admob';
 
 export default function Wallet() {
   const navigation = useNavigation();
@@ -80,16 +86,11 @@ export default function Wallet() {
       ticker: 'HGTX11',
       quantity: 50,
     },
-  ]
+  ];
 
   return (
     <>
-      <AdMobBanner
-          style={styles.bannerAd}
-          bannerSize="fullBanner"
-          adUnitID="ca-app-pub-3940256099942544/6300978111"
-          onDidFailToReceiveAdWithError={() => console.log('olá')}
-        />
+      <BannerAd size={BannerAdSize.FULL_BANNER} unitId={TestIds.BANNER} />
       <View style={styles.pageTitle}>
         <Text style={styles.textHeader}>Minha Carteira</Text>
       </View>
@@ -100,16 +101,26 @@ export default function Wallet() {
             <View key={item.key} style={styles.row}>
               <Text style={styles.ticker}>{item.ticker}</Text>
               <Text style={styles.quantity}>Cotas: {item.quantity}</Text>
-              <Feather name='edit' size={20} color='black' onPress={() => navigation.navigate('AlterarFii', { ticker: item.ticker, quantity: item.quantity })} />
+              <Feather
+                name="edit"
+                size={20}
+                color="black"
+                onPress={() =>
+                  navigation.navigate('AlterarFii', {
+                    ticker: item.ticker,
+                    quantity: item.quantity,
+                  })
+                }
+              />
             </View>
           )}
         />
       </SafeAreaView>
-      <TouchableOpacity style={styles.buttonAdd} onPress={() => Alert.alert('TEST')}> 
-        <Text style={styles.buttonAdd}>
-            Adicionar FII
-        </Text>
-      </TouchableOpacity >
+      <TouchableOpacity
+        style={styles.buttonAdd}
+        onPress={() => Alert.alert('TEST')}>
+        <Text style={styles.buttonAdd}>Adicionar FII</Text>
+      </TouchableOpacity>
     </>
   );
 }
@@ -149,7 +160,7 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     marginRight: 18,
     marginTop: 4,
-    marginBottom: 6
+    marginBottom: 6,
   },
   ticker: {
     flex: 1,
@@ -170,6 +181,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     color: 'white',
-    borderRadius: 4
-  }
+    borderRadius: 4,
+  },
 });

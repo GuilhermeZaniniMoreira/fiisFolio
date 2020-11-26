@@ -24,7 +24,7 @@ import {
   RewardedAd,
   BannerAd,
   TestIds,
-  BannerAdSize
+  BannerAdSize,
 } from '@react-native-firebase/admob';
 
 export default function Wallet() {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   pageTitle: {
-    backgroundColor: '#2a9d8f',
+    backgroundColor: '#228CDB',
   },
   container: {
     flex: 1,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   buttonAdd: {
     margin: 10,
     fontFamily: 'Nunito_600SemiBold',
-    backgroundColor: '#f4a261',
+    backgroundColor: '#0B7189',
     textAlign: 'center',
     fontSize: 18,
     color: 'white',

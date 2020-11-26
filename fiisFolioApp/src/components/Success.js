@@ -7,7 +7,7 @@ export default class BasicExample extends React.Component {
       <LottieView
         source={require('../animations/9553-check-animation.json')}
         autoPlay
-        loop
+        loop={false}
       />
     );
   }

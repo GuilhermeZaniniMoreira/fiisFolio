@@ -9,6 +9,7 @@ import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
+import Splash from '../pages/Splash';
 import Earnings from '../pages/Earnings';
 import Wallet from '../pages/Wallet';
 import Historical from '../pages/Historical';
@@ -37,7 +38,7 @@ export default function Routes() {
           },
         })}
         tabBarOptions={{
-          activeTintColor: '#2a9d8f',
+          activeTintColor: '#228CDB',
           inactiveTintColor: 'grey',
           // labelStyle: {
           //   fontFamily: 'Nunito_800ExtraBold',
@@ -47,6 +48,14 @@ export default function Routes() {
             height: Platform.OS === 'ios' ? 48 : 50,
           },
         }}>
+        <Tab.Screen
+          name="SplashTela"
+          component={Splash}
+          options={{
+            tabBarButton: () => null,
+            tabBarVisible: false,
+          }}
+        />
         <Tab.Screen name="Proventos" component={Earnings} />
         <Tab.Screen name="Carteira" component={Wallet} />
         <Tab.Screen name="Histórico" component={Historical} />

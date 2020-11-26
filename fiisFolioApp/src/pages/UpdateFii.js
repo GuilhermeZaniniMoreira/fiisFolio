@@ -64,7 +64,7 @@ export default function UpdateFii(props) {
             <View>
               <Jiro
                 label={ticker}
-                borderColor={'#2A9D8F'}
+                borderColor={'#228CDB'}
                 editable={false}
                 inputPadding={16}
                 onChangeText={(textValue) => handleValueChange(textValue)}
@@ -78,27 +78,21 @@ export default function UpdateFii(props) {
               {error ? (
                 <Jiro
                   label={'Fii'}
-                  borderColor={'#2A9D8F'}
-                  inputPadding={16}                  
+                  borderColor={'#228CDB'}
+                  inputPadding={16}
                   onChangeText={(textValue) => handleValueChange(textValue)}
+                  // eslint-disable-next-line react-native/no-inline-styles
                   inputStyle={{color: 'white'}}
                 />
               ) : (
                 <Jiro
                   label={'Quantidade de cotas'}
-                  borderColor={'#2A9D8F'}
+                  borderColor={'#228CDB'}
                   inputPadding={16}
                   onChangeText={(textValue) => handleValueChange(textValue)}
+                  // eslint-disable-next-line react-native/no-inline-styles
                   inputStyle={{color: 'white'}}
                 />
-                // <TextInput
-                //   keyboardType={
-                //     Platform.OS === 'ios' ? 'number-pad' : 'numeric'
-                //   }
-                //   defaultValue={`${quantity}`}
-                //   style={styles.input}
-                //   onChangeText={(textValue) => handleValueChange(textValue)}
-                // />
               )}
             </View>
             <Button
@@ -132,7 +126,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 24,
-    color: '#2a9d8f',
+    color: '#228CDB',
     fontFamily: 'Nunito_800ExtraBold',
   },
   editText: {
@@ -140,7 +134,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 24,
     paddingTop: 2,
-    color: '#2a9d8f',
+    color: '#228CDB',
     fontFamily: 'Nunito_800ExtraBold',
     flex: 1.3,
   },
@@ -162,27 +156,8 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Nunito_800ExtraBold',
   },
-  input: {
-    alignSelf: 'stretch',
-    height: 40,
-    fontSize: 20,
-    paddingLeft: 7,
-    elevation: 1,
-    borderRadius: 2,
-    backgroundColor: '#cdd1ce',
-    textAlign: 'center',
-  },
-  inputError: {
-    alignSelf: 'stretch',
-    height: 40,
-    fontSize: 20,
-    paddingLeft: 7,
-    elevation: 1,
-    borderRadius: 2,
-    backgroundColor: '#f4a261',
-  },
   button: {
     marginTop: 20,
-    backgroundColor: '#f4a261',
+    backgroundColor: '#0B7189',
   },
 });

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
+
 import {
   FlatList,
   StyleSheet,
@@ -12,81 +14,48 @@ import {
 
 import Feather from 'react-native-vector-icons/Feather';
 
-// import {
-//   AdMobBanner,
-//   AdMobInterstitial,
-//   PublisherBanner,
-//   AdMobRewarded,
-// } from 'react-native-admob';
+import {BannerAd, TestIds, BannerAdSize} from '@react-native-firebase/admob';
 
-import {
-  InterstitialAd,
-  RewardedAd,
-  BannerAd,
-  TestIds,
-  BannerAdSize,
-} from '@react-native-firebase/admob';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import axios from 'axios';
 
 export default function Wallet() {
+  const isFocused = useIsFocused();
+
+  const [fiis, setFiis] = useState([]);
+
   const navigation = useNavigation();
 
-  const data = [
-    {
-      key: '1',
-      ticker: 'BCFF11',
-      quantity: 50,
-    },
-    {
-      key: '2',
-      ticker: 'MXRF11',
-      quantity: 50,
-    },
-    {
-      key: '3',
-      ticker: 'HGLG11',
-      quantity: 50,
-    },
-    {
-      key: '4',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '5',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '6',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '7',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '8',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '9',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '10',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-    {
-      key: '11',
-      ticker: 'HGTX11',
-      quantity: 50,
-    },
-  ];
+  useEffect(() => {
+    const importData = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const data = [];
+        for (const [index, value] of keys.entries()) {
+          const quantity = await AsyncStorage.getItem(value);
+          var tickerRequest = value.substring(0, 4);
+          const ytd = await axios.get(
+            `https://fiis.com.br/${tickerRequest}/cotacoes/?periodo=ytd`,
+          );
+          let historicalYTD = [];
+          if (ytd.data.stockReports) {
+            historicalYTD = ytd.data.stockReports;
+          }
+          data.push({
+            key: index.toString(),
+            fii: value,
+            quantity,
+            historicalYTD,
+          });
+        }
+        setFiis(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    importData();
+  }, [isFocused]);
 
   return (
     <>
@@ -96,10 +65,10 @@ export default function Wallet() {
       <BannerAd size={BannerAdSize.FULL_BANNER} unitId={TestIds.BANNER} />
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={data}
+          data={fiis}
           renderItem={({item}) => (
             <View key={item.key} style={styles.row}>
-              <Text style={styles.ticker}>{item.ticker}</Text>
+              <Text style={styles.ticker}>{item.fii}</Text>
               <Text style={styles.quantity}>Cotas: {item.quantity}</Text>
               <Feather
                 name="edit"
@@ -107,7 +76,7 @@ export default function Wallet() {
                 color="black"
                 onPress={() =>
                   navigation.navigate('AlterarFii', {
-                    ticker: item.ticker,
+                    fii: item.fii,
                     quantity: item.quantity,
                   })
                 }
@@ -171,6 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Nunito_600SemiBold',
     flex: 1,
+    marginRight: 25,
   },
   buttonAdd: {
     margin: 10,

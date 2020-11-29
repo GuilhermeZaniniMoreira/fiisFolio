@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Feather from 'react-native-vector-icons/Feather';
 import {Button} from 'react-native-elements';
@@ -9,11 +10,10 @@ import {Jiro} from 'react-native-textinput-effects';
 
 export default function UpdateFii(props) {
   const navigation = useNavigation();
-  const {ticker} = props.route.params;
+  const {fii} = props.route.params;
   const {quantity} = props.route.params;
 
   const [value, setValue] = useState(quantity);
-  const [cotasQuantity, setCotasQuantity] = useState(quantity);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -21,10 +21,10 @@ export default function UpdateFii(props) {
   const handleUpdate = async () => {
     if (Number.isInteger(parseInt(value, 10))) {
       try {
-        await AsyncStorage.setItem(`${ticker}`, `${value}`);
+        await AsyncStorage.setItem(`${fii}`, `${value}`);
         setSuccess(true);
         await delay(1000);
-        navigation.navigate('Proventos');
+        navigation.navigate('Carteira');
         setSuccess(false);
       } catch (err) {
         console.log(err);
@@ -37,6 +37,16 @@ export default function UpdateFii(props) {
   const handleValueChange = (textValue) => {
     setError(false);
     setValue(textValue);
+  };
+
+  const handleDeleteFii = async () => {
+    try {
+      await AsyncStorage.removeItem(`${fii}`);
+      console.log('a');
+      navigation.navigate('Carteira');
+    } catch (exception) {
+      console.log(exception);
+    }
   };
 
   return (
@@ -57,31 +67,42 @@ export default function UpdateFii(props) {
               name="trash"
               size={24}
               color="black"
+              onPress={() =>
+                Alert.alert(
+                  `${fii}`,
+                  'Você realmente deseja excluir?',
+                  [
+                    {
+                      text: 'Cancelar',
+                      onPress: () => console.log('Cancel pressed.'),
+                      style: 'cancel',
+                    },
+                    {text: 'Sim', onPress: () => handleDeleteFii()},
+                  ],
+                  {cancelable: false},
+                )
+              }
               style={styles.deleteFii}
             />
           </View>
           <View style={styles.column}>
             <View>
               <Jiro
-                label={ticker}
+                label={fii}
                 borderColor={'#228CDB'}
                 editable={false}
                 inputPadding={16}
                 onChangeText={(textValue) => handleValueChange(textValue)}
                 inputStyle={{color: 'white'}}
               />
-              {/* <Text style={styles.label}>FII</Text>
-              <Text style={styles.ticker}>{ticker}</Text> */}
             </View>
             <View>
-              {/* <Text style={styles.label}>Quantidade de cotas</Text> */}
               {error ? (
                 <Jiro
                   label={'Fii'}
                   borderColor={'#228CDB'}
                   inputPadding={16}
                   onChangeText={(textValue) => handleValueChange(textValue)}
-                  // eslint-disable-next-line react-native/no-inline-styles
                   inputStyle={{color: 'white'}}
                 />
               ) : (
@@ -89,8 +110,8 @@ export default function UpdateFii(props) {
                   label={'Quantidade de cotas'}
                   borderColor={'#228CDB'}
                   inputPadding={16}
+                  value={`${value}`}
                   onChangeText={(textValue) => handleValueChange(textValue)}
-                  // eslint-disable-next-line react-native/no-inline-styles
                   inputStyle={{color: 'white'}}
                 />
               )}

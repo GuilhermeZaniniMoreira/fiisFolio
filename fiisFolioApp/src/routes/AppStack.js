@@ -79,18 +79,3 @@ export default function Routes() {
     </NavigationContainer>
   );
 }
-
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-// const Tab = createBottomTabNavigator();
-
-// function MyTabs() {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="Home" component={Earnings} />
-//       <Tab.Screen name="Settings" component={Wallet} />
-//     </Tab.Navigator>
-//   );
-// }
-
-// export default MyTabs;

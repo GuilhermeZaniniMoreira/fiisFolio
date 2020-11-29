@@ -1,46 +1,48 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet} from 'react-native';
-var yahoo = require('yahoo-financial-data');
+import axios from 'axios';
 
 export default function Splash() {
   const navigation = useNavigation();
   const [fiis, setFiis] = useState([]);
-  const [loading, setLoading] = useState(true);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
     const importData = async () => {
       try {
         const keys = await AsyncStorage.getAllKeys();
-        const result = await AsyncStorage.multiGet(keys);
-        await delay(2000);
-        await setFiis(result);
+        const data = [];
+        for (const fii of keys) {
+          const quantity = await AsyncStorage.getItem(fii);
+          var tickerRequest = fii.substring(0, 4);
+          const ytd = await axios.get(
+            `https://fiis.com.br/${tickerRequest}/cotacoes/?periodo=ytd`,
+          );
+          let historicalYTD = [];
+          if (ytd.data.stockReports) {
+            historicalYTD = ytd.data.stockReports;
+          }
+          data.push({
+            fii,
+            quantity,
+            historicalYTD,
+          });
+        }
+        setFiis(data);
       } catch (error) {
         console.error(error);
       }
     };
-    if (loading) {
-      importData();
-    }
-    setLoading(false);
-    if (fiis.length > 0 && !loading) {
-      console.log(fiis[0][0]);
-      yahoo.history(
-        'AAPL',
-        'close',
-        '2020-11-01',
-        '2020-11-08',
-        '1d',
-        (err, data) => {
-          console.log(err);
-          console.log(data);
-        },
-      );
+    importData();
+  }, []);
 
+  useEffect(() => {
+    if (fiis.length > 0) {
       navigation.navigate('Proventos', {
         data: fiis,
       });

@@ -90,10 +90,10 @@ export default function Wallet() {
 
   return (
     <>
-      <BannerAd size={BannerAdSize.FULL_BANNER} unitId={TestIds.BANNER} />
       <View style={styles.pageTitle}>
         <Text style={styles.textHeader}>Minha Carteira</Text>
       </View>
+      <BannerAd size={BannerAdSize.FULL_BANNER} unitId={TestIds.BANNER} />
       <SafeAreaView style={styles.container}>
         <FlatList
           data={data}
@@ -126,17 +126,15 @@ export default function Wallet() {
 }
 
 const styles = StyleSheet.create({
-  bannerAd: {
-    marginTop: 25,
-  },
   pageTitle: {
     backgroundColor: '#228CDB',
+    marginBottom: 15,
   },
   container: {
     flex: 1,
     alignSelf: 'stretch',
     backgroundColor: '#e5e5e5',
-    paddingTop: 20,
+    paddingTop: 15,
   },
   textHeader: {
     margin: 20,

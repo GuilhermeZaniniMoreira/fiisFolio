@@ -4,6 +4,7 @@ import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet} from 'react-native';
+var yahoo = require('yahoo-financial-data');
 
 export default function Splash() {
   const navigation = useNavigation();
@@ -27,6 +28,19 @@ export default function Splash() {
     }
     setLoading(false);
     if (fiis.length > 0 && !loading) {
+      console.log(fiis[0][0]);
+      yahoo.history(
+        'AAPL',
+        'close',
+        '2020-11-01',
+        '2020-11-08',
+        '1d',
+        (err, data) => {
+          console.log(err);
+          console.log(data);
+        },
+      );
+
       navigation.navigate('Proventos', {
         data: fiis,
       });

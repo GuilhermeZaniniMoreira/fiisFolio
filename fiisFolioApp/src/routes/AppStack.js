@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -25,15 +26,13 @@ export default function Routes() {
         screenOptions={({route}) => ({
           tabBarIcon: ({color, size}) => {
             if (route.name === 'Proventos') {
-              return <Ionicons name="ios-cash" size={size} color={color} />;
+              return <Feather name="dollar-sign" size={size} color={color} />;
             } else if (route.name === 'Carteira') {
-              return <Ionicons name="ios-wallet" size={size} color={color} />;
+              return <AntDesign name="wallet" size={size} color={color} />;
             } else if (route.name === 'Histórico') {
-              return (
-                <Ionicons name="ios-stats-chart" size={size} color={color} />
-              );
+              return <AntDesign name="linechart" size={size} color={color} />;
             } else if (route.name === 'Configurações') {
-              return <Ionicons name="ios-settings" size={size} color={color} />;
+              return <AntDesign name="setting" size={size} color={color} />;
             }
           },
         })}

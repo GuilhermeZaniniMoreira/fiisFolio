@@ -28,7 +28,7 @@ export default function App() {
       <StatusBar
         backgroundColor="transparent"
         translucent
-        barStyle="dark-content"
+        barStyle="light-content"
       />
       <AppStack />
     </>

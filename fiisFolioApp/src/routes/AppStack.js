@@ -39,10 +39,10 @@ export default function Routes() {
         tabBarOptions={{
           activeTintColor: '#228CDB',
           inactiveTintColor: 'grey',
-          // labelStyle: {
-          //   fontFamily: 'Nunito_800ExtraBold',
-          //   fontSize: 14,
-          // },
+          labelStyle: {
+            // fontFamily: 'Nunito_800ExtraBold',
+            fontSize: 14,
+          },
           style: {
             height: Platform.OS === 'ios' ? 48 : 50,
           },

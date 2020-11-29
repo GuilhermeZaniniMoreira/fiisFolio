@@ -10,7 +10,6 @@ import axios from 'axios';
 export default function Splash() {
   const navigation = useNavigation();
   const [fiis, setFiis] = useState([]);
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
     const importData = async () => {
@@ -21,7 +20,7 @@ export default function Splash() {
           const quantity = await AsyncStorage.getItem(fii);
           var tickerRequest = fii.substring(0, 4);
           const ytd = await axios.get(
-            `https://fiis.com.br/${tickerRequest}/cotacoes/?periodo=ytd`,
+            `https://fiis.com.br/${tickerRequest}/cotacoes/?periodo=12+months`,
           );
           let historicalYTD = [];
           if (ytd.data.stockReports) {

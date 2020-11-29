@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,6 +17,10 @@ export default function UpdateFii(props) {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  useEffect(() => {
+    setValue(quantity);
+  }, [quantity]);
 
   const handleUpdate = async () => {
     if (Number.isInteger(parseInt(value, 10))) {
@@ -42,7 +46,6 @@ export default function UpdateFii(props) {
   const handleDeleteFii = async () => {
     try {
       await AsyncStorage.removeItem(`${fii}`);
-      console.log('a');
       navigation.navigate('Carteira');
     } catch (exception) {
       console.log(exception);
@@ -61,6 +64,7 @@ export default function UpdateFii(props) {
               size={24}
               color="black"
               style={styles.closePage}
+              onPress={() => navigation.navigate('Carteira')}
             />
             <Text style={styles.editText}>Editar</Text>
             <Feather

@@ -1,16 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, SafeAreaView} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {useNavigation} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 import {BannerAd, TestIds, BannerAdSize} from '@react-native-firebase/admob';
 
-import {AreaChart} from 'react-native-svg-charts';
-import * as shape from 'd3-shape';
+import {LineChart} from 'react-native-svg-charts';
+import axios from 'axios';
 
 export default function Earnings(props) {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const {data} = props.route.params;
   const [fiis, setFiis] = useState([]);
 
@@ -31,6 +35,39 @@ export default function Earnings(props) {
     }
   }, [data]);
 
+  useEffect(() => {
+    const importData = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const newData = [];
+        for (const [index, fii] of keys.entries()) {
+          const quantity = await AsyncStorage.getItem(fii);
+          var tickerRequest = fii.substring(0, 4);
+          const ytd = await axios.get(
+            `https://fiis.com.br/${tickerRequest}/cotacoes/?periodo=12+months`,
+          );
+          let historicalYTD = [];
+          if (ytd.data.stockReports) {
+            historicalYTD = ytd.data.stockReports;
+          }
+          const historical = historicalYTD.map((day) => {
+            return parseFloat(day.fec);
+          });
+          newData.push({
+            key: `{${index}}`,
+            fii,
+            quantity,
+            historical,
+          });
+        }
+        setFiis(newData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    importData();
+  }, [isFocused]);
+
   return (
     <>
       <View style={styles.pageTitle}>
@@ -38,22 +75,25 @@ export default function Earnings(props) {
       </View>
       <BannerAd size={BannerAdSize.FULL_BANNER} unitId={TestIds.BANNER} />
       <SafeAreaView style={styles.container}>
-        <FlatList
-          data={fiis}
-          renderItem={({item}) => (
-            <View key={item.key} style={styles.row}>
-              <Text style={styles.ticker}>{item.fii}</Text>
-              <AreaChart
-                style={styles.chart}
-                data={item.historical}
-                contentInset={{top: 10, bottom: 10}}
-                curve={shape.curveNatural}
-                svg={{fill: 'rgba(33, 206, 153, 0.8)'}}
-              />
-              <Text style={styles.quantity}>Cotas: {item.quantity}</Text>
-            </View>
-          )}
-        />
+        {fiis.length > 0 && (
+          <FlatList
+            data={fiis}
+            renderItem={({item}) => (
+              <View key={item.key} style={styles.row}>
+                <Text style={styles.ticker}>{item.fii}</Text>
+                <View style={styles.chartView}>
+                  <LineChart
+                    style={styles.chart}
+                    data={item.historical}
+                    contentInset={{top: 10, bottom: 10}}
+                    svg={{stroke: 'rgb(33, 206, 153, 0.8)'}}
+                  />
+                </View>
+                <Text style={styles.quantity}>Cotas: {item.quantity}</Text>
+              </View>
+            )}
+          />
+        )}
       </SafeAreaView>
     </>
   );
@@ -83,33 +123,33 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 15,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginLeft: 18,
-    marginRight: 18,
-    marginBottom: 6,
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 5,
   },
   ticker: {
     flex: 1,
     fontFamily: 'Nunito_600SemiBold',
     fontSize: 16,
     paddingTop: 20,
-    marginRight: 20,
+    marginLeft: 20,
     flexDirection: 'column',
   },
-  chart: {
-    height: 50,
-    flex: 0.1,
-    paddingRight: 20,
+  chartView: {
     flexDirection: 'column',
+    flex: 1.2,
+  },
+  chart: {
+    width: 100,
+    height: 60,
   },
   quantity: {
     flexDirection: 'column',
     fontSize: 16,
     paddingTop: 20,
+    marginRight: 20,
     fontFamily: 'Nunito_600SemiBold',
   },
   buttonAdd: {

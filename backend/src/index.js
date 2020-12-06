@@ -6,8 +6,7 @@ require('dotenv').config();
 const app = express();
 const bodyParser = require('body-parser')
 
-console.log(process.env.MONGO_PASSWORD);
-mongoose.connect(`mongodb+srv://guilherme:${process.env.MONGO_PASSWORD}@cluster0.n9hqi.mongodb.net/meusFIIs?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://guilherme:${process.env.MONGO_PASSWORD}@cluster0.n9hqi.mongodb.net/fiisFolio?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false

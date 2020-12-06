@@ -6,8 +6,9 @@ const FIIsSchema = new mongoose.Schema({
     baseDate: Date,
     paymentDate: Date,
     priceBaseDate: Number,
+    dy: Number,
     dividend: Number,
     historic: Array,
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('FIIsSchema', FIIsSchema);

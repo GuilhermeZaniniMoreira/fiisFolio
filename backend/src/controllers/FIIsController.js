@@ -2,6 +2,7 @@ const axios = require('axios')
 const FIIs = require('../models/FIIs');
 const mongoose = require('mongoose');
 var fs = require('fs');
+const { base } = require('../models/FIIs');
 
 module.exports = {
     async index(request, response) {
@@ -17,22 +18,9 @@ module.exports = {
         response.json(fiis);
     },
     async update(request, response) {
-        const { ticker, baseDate, paymentDate, priceBaseDate, dividend } = request.body;
-        const fii = await FIIs.findOne({ ticker: ticker });
-        if (fii && fii.historic) {
-            const historic = fii.historic;
-            const found = historic.some(el => new Date(el.baseDate).getTime() === new Date(historic[0].baseDate).getTime());
-            if (!found) {
-                const filter = { ticker };
-                const update = { baseDate, paymentDate, priceBaseDate, dividend, historic: [...historic, { baseDate, paymentDate, priceBaseDate, dividend }] };
-                await FIIs.findOneAndUpdate(filter, update);
-            }
-        }
-        const data = await FIIs.findOne({ ticker: ticker });
-        response.json(data);
-    },
-    async updateHistoric(request, response) {
         const { ticker, historic } = request.body;
-
+        const filter = { ticker };
+        const fii = await FIIs.findOneAndUpdate(filter, request.body);
+        response.json(fii);
     }
 }
